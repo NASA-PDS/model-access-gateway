@@ -25,19 +25,21 @@ name: 🤪 Unstable integration & delivery
 # Driving Event
 # -------------
 #
-# What event starts this workflow: a push to ``main`` (or ``master`` in old
-# parlance). For the "glob++" pattern syntax, see https://git.io/JJZQt
+# What event starts this workflow: a push to any branch. Images are tagged as
+# ``<branch>-<sha>`` in all cases. The ``:latest`` tag is never updated so that
+# deployments always reference an explicit, reproducible image.
 
 on:
     push:
         branches:
-             - main
+             - '**'
         paths-ignore:
             - 'CHANGELOG.md'
             - 'docs/requirements/**'
-        workflow_dispatch:
+    workflow_dispatch:
 
-concurrency: roundup
+# Per-branch concurrency so parallel branch builds don't queue behind each other.
+concurrency: ${{ github.ref }}
 
 
 # What to Do
@@ -65,13 +67,23 @@ jobs:
                     username: ${{secrets.DOCKERHUB_USERNAME}}
                     password: ${{secrets.DOCKERHUB_TOKEN}}
             -
-                name: 🎰 QEMU Multiple Machine Emulation
+                name: 🎰 QEMU Multiple Machine Emulation
                 uses: docker/setup-qemu-action@v3
             -
-                name: 🚢 Docker Buildx
+                name: 🚢 Docker Buildx
                 uses: docker/setup-buildx-action@v3
             -
-                name: 🧱 Image Construction and Publication
+                name: 🏷️ Compute Image Tags
+                id: image-tags
+                run: |
+                    BRANCH=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g')
+                    TAGS="${{secrets.DOCKERHUB_USERNAME}}/ai-gateway:${BRANCH}-${{ github.sha }}"
+                    if [ "${{ github.ref_name }}" = "main" ]; then
+                        TAGS="${TAGS},${{secrets.DOCKERHUB_USERNAME}}/ai-gateway:latest"
+                    fi
+                    echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+            -
+                name: 🧱 Image Construction and Publication
                 uses: docker/build-push-action@v6
                 with:
                     context: ./docker
@@ -79,7 +91,7 @@ jobs:
                     file: ./docker/Dockerfile
                     platforms: linux/amd64,linux/arm64
                     push: true
-                    tags: ${{secrets.DOCKERHUB_USERNAME}}/litellm-freehealth:${{github.sha}},${{secrets.DOCKERHUB_USERNAME}}/litellm-freehealth:latest
+                    tags: ${{ steps.image-tags.outputs.tags }}
 
 ...
 
