@@ -44,6 +44,12 @@ litellm_settings:
 router_settings:
   timeout: 600
   num_retries: 2
+  model_group_alias:
+    "claude-sonnet-5": "claude-sonnet-5-5"
+    "claude-sonnet-5[1m]": "claude-sonnet-5-5"
+    "claude-sonnet-5-5[1m]": "claude-sonnet-5-5"
+    "claude-opus-5-5[1m]": "claude-opus-5-5"
+    "claude-fable-5-1[1m]": "claude-fable-5-1"
 
 general_settings:
   public_routes:
