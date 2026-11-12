@@ -19,3 +19,16 @@ It start the LLM and provided heath check free end-point on port 4001
 Login to AWS.
 
     aws ecr create-repository --repository-name pds-litellm --tags Key=tenant,Value=en Key=venue,Value=dev Key=component,Value=llm-for-developers Key=managedby,Value={your email} Key=cicd,Value=cli
+
+
+## Deploy with terraform
+
+In AWS console, create secrets:
+
+
+
+Get AWS credentials in your terminal:
+
+    terraform init
+    terraform plan
+    terraform apply
