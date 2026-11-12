@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Smoke test for a deployed ai-gateway. Usage: scripts/smoke-test.sh <venue-suffix>   (dev | test | prod)
+# Smoke test for a deployed model-access-gateway. Usage: scripts/smoke-test.sh <venue-suffix>   (dev | test | prod)
 # Requires AWS credentials for the target venue, plus the aws and curl CLIs.
 set -uo pipefail
 

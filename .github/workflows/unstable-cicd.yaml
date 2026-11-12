@@ -77,9 +77,9 @@ jobs:
                 id: image-tags
                 run: |
                     BRANCH=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9._-]/-/g')
-                    TAGS="${{secrets.DOCKERHUB_USERNAME}}/ai-gateway:${BRANCH}-${{ github.sha }}"
+                    TAGS="${{secrets.DOCKERHUB_USERNAME}}/model-access-gateway:${BRANCH}-${{ github.sha }}"
                     if [ "${{ github.ref_name }}" = "main" ]; then
-                        TAGS="${TAGS},${{secrets.DOCKERHUB_USERNAME}}/ai-gateway:latest"
+                        TAGS="${TAGS},${{secrets.DOCKERHUB_USERNAME}}/model-access-gateway:latest"
                     fi
                     echo "tags=${TAGS}" >> $GITHUB_OUTPUT
             -

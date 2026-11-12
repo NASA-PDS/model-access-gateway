@@ -64,7 +64,7 @@ resource "aws_iam_role" "ecs_task" {
 }
 
 resource "aws_iam_role_policy" "ecs_task" {
-  name = "ai-gateway-runtime"
+  name = "model-access-gateway-runtime"
   role = aws_iam_role.ecs_task.id
 
   policy = jsonencode({

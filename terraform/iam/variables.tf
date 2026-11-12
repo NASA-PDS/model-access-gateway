@@ -32,7 +32,7 @@ variable "component" {
 variable "application" {
   description = "Application name used to build resource names, as <venue>-<application>."
   type        = string
-  default     = "ai-gateway"
+  default     = "model-access-gateway"
 }
 
 variable "managedby" {
