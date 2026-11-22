@@ -1,5 +1,5 @@
 # take a stable image from https://github.com/BerriAI/litellm/pkgs/container/litellm-database/versions
-FROM ghcr.io/berriai/litellm-database:main-v1.81.0-stable
+FROM ghcr.io/berriai/litellm-database:v1.108.13-lts
 
 ARG IMAGE_TAG=latest
 ENV IMAGE_TAG=$IMAGE_TAG
